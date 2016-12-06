@@ -21,6 +21,7 @@ pkey_value_create_entry: true
 schema: qwat_od
 generate_child_views: True
 exec_order: 2
+isroot: True
 
 custom_delete: "PERFORM qwat_od.fn_node_set_type(OLD.id)"
 
