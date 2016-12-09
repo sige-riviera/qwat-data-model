@@ -4,7 +4,7 @@ import imp
 import os
 import sys
 
-pgiv = imp.load_source('PGInheritanceView', os.path.join(os.path.dirname(__file__), '../../../metaproject/postgresql/pg_inheritance_view/pg_inheritance_view.py'))
+pgiv = imp.load_source('PGInheritanceViewRecursive', os.path.join(os.path.dirname(__file__), '../../../metaproject/postgresql/pg_inheritance_view/pg_inheritance_view_recursive.py'))
 
 if len(sys.argv) > 1:
 	pg_service = sys.argv[1]
@@ -41,13 +41,13 @@ children:
   element:
 
     c_table: qwat_od.network_element
+    table: qwat_od.vw_node_element
     pkey: id
     c_alter:
       orientation:
         read: COALESCE(element.orientation, -node._pipe_orientation)
 
     alias: element
-    table: qwat_od.vw_node_element
     pkey_value: NEW.id
     schema: qwat_od
     generate_child_views: True
@@ -58,9 +58,9 @@ children:
     children:
         installation:
             c_table: qwat_od.vw_qwat_installation
+            table: qwat_od.installation
             pkey: id
             alias: installation
-            table: qwat_od.installation
             pkey: id
             pkey_value: NEW.id
             allow_type_change: false
@@ -193,4 +193,4 @@ view: qwat_od.vw_element_part
 
 """
 
-print pgiv.PGInheritanceView(pg_service, qwat_node_element).sql_all()
+print pgiv.PGInheritanceViewRecursive(pg_service, qwat_node_element).sql_all()
